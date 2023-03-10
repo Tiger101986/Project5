@@ -165,7 +165,7 @@ function checkFirstName ()
     {
         firstNameErrorMsg.innerHTML = null;
         firstName.style.border = '2px solid green';
-        validFirstName = '';
+        validFirstName = true;
     } else if (firstNameRegex.test(firstName.value) === false || firstName.value === '') {
         firstNameErrorMsg.innerHTML = 'Please inter a valid first name';
         firstName.style.border = '2px solid red';
@@ -266,36 +266,17 @@ function checkEmail ()
 
 // Submit ordered data information to send to API backend
 
-let itemId = cart.map(item => item.id);
-console.log(itemId);
+
 
 //let dataBody = () => {
  
-const body = 
-{        
-    contact:
-    {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value
-    },
-    
-    products: itemId
-    
-}
-console.log(body);
+
 //return body;
 
 //}
 
 //const body = dataBody();
-const orderData = {
-    method: 'post',
-    headers: { "Content-Type": "application/json", },
-    body: JSON.stringify(body),
-};
+
 
 
 const order = document.getElementById('order');
@@ -305,10 +286,32 @@ order.addEventListener('click', (event) => {
     
     if ( validFirstName === true && validLastName === true && validAddress === true && validCityName === true && validEmail === true )
     {
+        let itemId = cart.map(item => item.id);
+        console.log(itemId);
+        let body = 
+        {        
+        contact:
+        {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            address: address.value,
+            city: city.value,
+            email: email.value
+        },
+        
+        products: itemId
+        
+        }
+        console.log(body);
+        const orderData = {
+            method: 'post',
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(body),
+        };
         fetch('http://localhost:3000/api/products/order', orderData)
             .then((response) => response.json())
             .then((data) => {
-                let confirmationUrl = './confirmation.html?id=' + data.orderId;
+                let confirmationUrl = './confirmation.html?orderedId=' + data.orderId;
                 window.location.href = confirmationUrl;
                 //localStorage.clear();
             })

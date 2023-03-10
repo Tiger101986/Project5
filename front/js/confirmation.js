@@ -2,7 +2,7 @@
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const orderedId = urlParams.get('orderId');
+const orderedId = urlParams.get('orderedId');
 
 // display confirmation id on confirmation page
 const orderId = document.getElementById('orderId');
