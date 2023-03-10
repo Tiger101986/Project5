@@ -3,25 +3,8 @@
   - PULL all ordered items from locaslStorage to display on cart page
 */
 
-/*  const productObj = {
-    id: '',
-    color: '',
-    name: '',
-    image: '',
-    price: '',
-
-}; 
-function initialProductObj(productData) {
-     productObj.id = productData._id;
-    productObj.color = productData.colors;
-    productObj.name = productData.name;
-    productObj.image = productData.imageUrl;
-    productObj.price = productData.price; 
-    let seach = cart.find(x => x.id === productData.id && x.color === productData.colors);
-    return seach;
-
-} */
 fetch('http://localhost:3000/api/products/')
+
     .then((response) => response.json())
     .then((data) => {
         //console.log(data);
@@ -68,9 +51,10 @@ function generateCartItem(product)
                     </article>
                 `;
 
-            removeItem (item)    
+            removeItem ();  
         });
     } 
+    changeQuantity(product);
     totalQuantityAndPrice(product); 
 }
 //generateCartItem();
@@ -79,38 +63,29 @@ function generateCartItem(product)
     How to change quantity input in localStorage??????????
     Changing Quantity in Cart page before submit to order
 */
+let changeQuantity = (product) => {
+    const itemQuantity = document.getElementsByClassName('itemQuantity');
 
+    for (let i = 0; i < itemQuantity.length; i++) {
 
-
-let article = cartItems.querySelector('article');
-console.log(article);
-/* let id = article.dataset.id;
-console.log(id);
-let color = article.dataset.color; */
-
-const itemQuantity = document.getElementsByClassName('itemQuantity');
-console.log(itemQuantity)
-for (let i = 0; i < itemQuantity.length; i++)
-{
-    
-    let quantityChanged = itemQuantity[i];
-    quantityChanged.addEventListener('change', (event) =>{
-        console.log(event.target.value);
-        let  article = event.target.closest('article');
-        let itemId = article.getAttribute("data-id");
-        let itemColor = article.getAttribute("data-color");
-       for (let i = 0; i < cart.length; i++)
-       {   
-           if ( cart[i].id === itemId  && cart[i].color === itemColor)
-           {
-                cart[i].quantity = event.target.value;              
-           }               
-       }  
-       totalQuantityAndPrice();  
-       localStorage.setItem('cart', JSON.stringify(cart));     
-       cart = JSON.parse(localStorage.getItem('cart'));
-    });
+        let quantityChanged = itemQuantity[i];
+        quantityChanged.addEventListener('change', (event) => {
+            console.log(event.target.value);
+            let article = event.target.closest('article');
+            let itemId = article.getAttribute("data-id");
+            let itemColor = article.getAttribute("data-color");
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === itemId && cart[i].color === itemColor) {
+                    cart[i].quantity = event.target.value;
+                }
+            }
+            totalQuantityAndPrice(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            cart = JSON.parse(localStorage.getItem('cart'));
+        });
+    }
 }
+
 
 
 
@@ -171,7 +146,7 @@ function removeItem ()
     }
     
 } 
-removeItem();
+
 
 
 
