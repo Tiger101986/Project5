@@ -267,18 +267,6 @@ function checkEmail ()
 // Submit ordered data information to send to API backend
 
 
-
-//let dataBody = () => {
- 
-
-//return body;
-
-//}
-
-//const body = dataBody();
-
-
-
 const order = document.getElementById('order');
 order.addEventListener('click', (event) => {
 

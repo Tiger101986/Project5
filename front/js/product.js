@@ -22,10 +22,6 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
 const productObj = {
     id: '',
     color: '',
-    name: '',
-    imageUrl: '',
-    altTxt: '',
-    price: '',
     quantity: 1 
 };
 
@@ -101,10 +97,6 @@ function initialProductObj(productData)
 {
     productObj.id = productData._id;
     productObj.color = productData.colors;
-    productObj.name = productData.name;
-    productObj.imageUrl= productData.imageUrl;
-    productObj.altTxt = productData.altTxt;
-    productObj.price = productData.price;
 }
 
 /* Verify Conditions of products in cart.
