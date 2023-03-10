@@ -51,11 +51,13 @@ function generateCartItem(product)
                     </article>
                 `;
 
-            removeItem ();  
+            
         });
     } 
     changeQuantity(product);
+     
     totalQuantityAndPrice(product); 
+    removeItem (); 
 }
 //generateCartItem();
 
@@ -103,7 +105,7 @@ function totalQuantityAndPrice (product)
     {
         let shopItems = product.find(product => product._id === item.id) || [];
         totalOrderedItem += parseInt(item.quantity, 10);
-        totalOrderedItemPrice += totalOrderedItem * shopItems.price; 
+        totalOrderedItemPrice +=  item.quantity * shopItems.price; 
         totalQuantity.innerHTML = totalOrderedItem;
         totalPrice.innerHTML = totalOrderedItemPrice; 
     }); 
@@ -123,7 +125,7 @@ function removeItem ()
             let article = event.target.closest('article');
             let deleteItemId = article.getAttribute("data-id");
             let deleteItemColor = article.getAttribute("data-color");
-            cart = JSON.parse(localStorage.getItem('cart'));
+           
             for (let i = 0; i < cart.length; i++)
             {   
                 if ( cart[i].id === deleteItemId  && cart[i].color === deleteItemColor )
@@ -147,7 +149,7 @@ function removeItem ()
     
 } 
 
-
+removeItem();
 
 
 
