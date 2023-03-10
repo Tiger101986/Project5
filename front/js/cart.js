@@ -3,6 +3,30 @@
   - PULL all ordered items from locaslStorage to display on cart page
 */
 
+/*  const productObj = {
+    id: '',
+    color: '',
+    name: '',
+    image: '',
+    price: '',
+
+}; 
+function initialProductObj(productData) {
+     productObj.id = productData._id;
+    productObj.color = productData.colors;
+    productObj.name = productData.name;
+    productObj.image = productData.imageUrl;
+    productObj.price = productData.price; 
+    let seach = cart.find(x => x.id === productData.id && x.color === productData.colors);
+    return seach;
+
+} */
+fetch('http://localhost:3000/api/products/')
+    .then((response) => response.json())
+    .then((data) => {
+        //console.log(data);
+        generateCartItem(data);
+    }); 
 let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
 console.log(cart);
 
@@ -10,23 +34,26 @@ let cartItems = document.getElementById('cart__items');
 console.log(cartItems);
 
 
-function generateCartItem()
+function generateCartItem(product)
 {     
-    if (cart.length !== 0)
+    if (cart.length !== 0)  
     {
+        
         cart.forEach((item) => 
         {
+            
+            let search = product.find(product => product._id === item.id) || [];
             cartItems.innerHTML += 
                 `
                     <article class="cart__item" data-id="${item.id}" data-color="${item.color}">
                         <div class="cart__item__img">
-                            <img src=${item.imageUrl} alt=${item.altTxt}>
+                            <img src=${search.imageUrl} alt=${search.altTxt}>
                         </div>
                         <div class="cart__item__content">
                             <div class="cart__item__content__description">
-                                <h2>${item.name}</h2>
+                                <h2>${search.name}</h2>
                                 <p>${item.color}</p>
-                                <p>€${item.price}</p>
+                                <p>€${search.price}</p>
                             </div>
                             <div class="cart__item__content__settings">
                                 <div class="cart__item__content__settings__quantity">
@@ -40,11 +67,13 @@ function generateCartItem()
                         </div>
                     </article>
                 `;
+
             removeItem (item)    
         });
-    }  
+    } 
+    totalQuantityAndPrice(product); 
 }
-generateCartItem();
+//generateCartItem();
 
 /*
     How to change quantity input in localStorage??????????
@@ -88,7 +117,7 @@ for (let i = 0; i < itemQuantity.length; i++)
 
 // Calculate total quantity and price of ordered items
 
-function totalQuantityAndPrice () 
+function totalQuantityAndPrice (product) 
 {
     let totalOrderedItem = 0;
     let totalOrderedItemPrice = 0; 
@@ -97,14 +126,15 @@ function totalQuantityAndPrice ()
 
     cart.forEach((item) => 
     {
+        let shopItems = product.find(product => product._id === item.id) || [];
         totalOrderedItem += parseInt(item.quantity, 10);
-        totalOrderedItemPrice += totalOrderedItem * item.price; 
+        totalOrderedItemPrice += totalOrderedItem * shopItems.price; 
         totalQuantity.innerHTML = totalOrderedItem;
         totalPrice.innerHTML = totalOrderedItemPrice; 
     }); 
    
 }
-totalQuantityAndPrice();
+
 
 // Use match() method to remove item
 function removeItem ()
