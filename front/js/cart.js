@@ -323,7 +323,7 @@ order.addEventListener('click', (event) => {
             .then((data) => {
                 let confirmationUrl = './confirmation.html?orderedId=' + data.orderId;
                 window.location.href = confirmationUrl;
-                //localStorage.clear();
+                localStorage.clear();
             })
             .catch(error => console.log(error));
     } 
