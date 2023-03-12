@@ -3,13 +3,28 @@
   - PULL all ordered items from locaslStorage to display on cart page
 */
 
+let productCache;
+
 fetch('http://localhost:3000/api/products/')
 
     .then((response) => response.json())
     .then((data) => {
-        //console.log(data);
-        generateCartItem(data);
+        
+       initialProductCache(data);
+        
+        generateCartItem();
+         
     }); 
+
+let initialProductCache = (productData) => {
+    return productCache = productData;
+
+}
+
+
+
+
+  
 let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
 console.log(cart);
 
@@ -17,7 +32,7 @@ let cartItems = document.getElementById('cart__items');
 console.log(cartItems);
 
 
-function generateCartItem(product)
+function generateCartItem()
 {     
     if (cart.length !== 0)  
     {
@@ -25,7 +40,8 @@ function generateCartItem(product)
         cart.forEach((item) => 
         {
             
-            let search = product.find(product => product._id === item.id) || [];
+            let search = productCache.find(items => items._id === item.id) || [];
+            console.log(search);
             cartItems.innerHTML += 
                 `
                     <article class="cart__item" data-id="${item.id}" data-color="${item.color}">
@@ -51,13 +67,12 @@ function generateCartItem(product)
                     </article>
                 `;
 
-            
+            changeQuantity();
+            removeItem();
+            totalQuantityAndPrice(); 
         });
     } 
-    changeQuantity(product);
-     
-    totalQuantityAndPrice(product); 
-    removeItem (); 
+    
 }
 //generateCartItem();
 
@@ -65,7 +80,7 @@ function generateCartItem(product)
     How to change quantity input in localStorage??????????
     Changing Quantity in Cart page before submit to order
 */
-let changeQuantity = (product) => {
+let changeQuantity = () => {
     const itemQuantity = document.getElementsByClassName('itemQuantity');
 
     for (let i = 0; i < itemQuantity.length; i++) {
@@ -81,7 +96,7 @@ let changeQuantity = (product) => {
                     cart[i].quantity = event.target.value;
                 }
             }
-            totalQuantityAndPrice(product);
+            totalQuantityAndPrice();
             localStorage.setItem('cart', JSON.stringify(cart));
             cart = JSON.parse(localStorage.getItem('cart'));
         });
@@ -94,7 +109,7 @@ let changeQuantity = (product) => {
 
 // Calculate total quantity and price of ordered items
 
-function totalQuantityAndPrice (product) 
+function totalQuantityAndPrice () 
 {
     let totalOrderedItem = 0;
     let totalOrderedItemPrice = 0; 
@@ -103,13 +118,13 @@ function totalQuantityAndPrice (product)
 
     cart.forEach((item) => 
     {
-        let shopItems = product.find(product => product._id === item.id) || [];
+        let search = productCache.find(items => items._id === item.id) || []
         totalOrderedItem += parseInt(item.quantity, 10);
-        totalOrderedItemPrice +=  item.quantity * shopItems.price; 
+        totalOrderedItemPrice +=  item.quantity * search.price; 
         totalQuantity.innerHTML = totalOrderedItem;
         totalPrice.innerHTML = totalOrderedItemPrice; 
     }); 
-   
+    
 }
 
 
@@ -149,7 +164,7 @@ function removeItem ()
     
 } 
 
-removeItem();
+//removeItem();
 
 
 
