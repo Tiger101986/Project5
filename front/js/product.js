@@ -1,3 +1,7 @@
+/* 
+    Using new URLSearchParams(window.location.search) to collect the ID of a product to display on product page.
+*/
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 console.log(id);
@@ -13,9 +17,8 @@ fetch(getOneUrlById)
   });  
 
 
-/* localStorage.setItem('Products', JSON,stringify(data));
-localStorage.setItem('cart', []); */
 
+// assign cart array variable to get data item in localStorage 
 let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
 
 //this obj represents the product that user selected
@@ -27,10 +30,10 @@ const productObj = {
 
 
 
-
+// generate product card 
 function productionCard (productData)
 {
-
+    // access to dom
     const itemImg = document.getElementsByClassName('item__img')[0];
     const title = document.querySelector('#title');
     const price = document.querySelector('#price');
@@ -39,23 +42,20 @@ function productionCard (productData)
     const quantity = document.getElementById('quantity');
     const addToCart = document.getElementById('addToCart');
     
-
+    // modify element by adding textContent
     title.textContent = productData.name;
     price.textContent = productData.price;
     description.textContent = productData.description;
 
-    console.log(title);
-    console.log(price);
-    console.log(description);
-
+    // create image element and setAttributes of source and alternative text
     const img = document.createElement('img');
     img.setAttribute('src', productData.imageUrl);
     img.setAttribute('alt', productData.altTxt); 
 
+    //appendChild 
     itemImg.appendChild(img);  
 
     // Creating option elements to select colors of item 
-    //const option = document.createElement('option');
     for ( let color of productData.colors)
     {
         const option = document.createElement('option');
@@ -76,7 +76,7 @@ function productionCard (productData)
         productObj.quantity = parseInt(input, 10);
         console.log(productObj);
     });
-    // add addEventListener function to select color 
+    // add addEventListener function to select color option 
     colors.addEventListener('change', function selectedColor(event){
        
         let selectedColor = event.target.value;
@@ -93,6 +93,7 @@ function productionCard (productData)
             
 }   
 
+// initial productObj 
 function initialProductObj(productData)
 {
     productObj.id = productData._id;
@@ -146,7 +147,8 @@ function addItemToCart ()
 
         cart.push(productObj);
     } 
-    
+
+    //setting localStorage
     localStorage.setItem('cart', JSON.stringify(cart));     
     cart = JSON.parse(localStorage.getItem('cart'));
     resetProduct();
@@ -161,13 +163,10 @@ function resetProduct()
 
     colors.value = '';
     quantity.value = 1;
-
-    
-    
    
     productObj.color = '';
     productObj.quantity = 1;
-    console.log (productObj);
+  
 }
 
 
