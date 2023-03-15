@@ -129,20 +129,20 @@ function addItemToCart ()
     {
         return ;
     }
-    let doIPush = true; 
+    let selectedId = true; 
     for ( let product of cart)
     {   
         if(product.id === productObj.id && product.color === productObj.color)
         {
             console.log("before", product.quantity);
             product.quantity += productObj.quantity;
-            doIPush  = false;   
+            selectedId  = false;   
             console.log("after", product.quantity);
         }
                            
     }
     //console.log (cart);
-    if (doIPush === true){
+    if (selectedId === true){
 
         cart.push(productObj);
     } 
