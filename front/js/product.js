@@ -100,10 +100,13 @@ function initialProductObj(productData)
     productObj.color = productData.colors;
 }
 
-/* Verify Conditions of products in cart.
-1- same id & color
-2- same id & different color
-3- different id & same color */
+/*  
+    Create addItemToCart function to add ordered product into cart
+    Verify Conditions of products in cart.
+    1- same id & color
+    2- same id & different color
+    3- different id & same color
+*/
 
 function addItemToCart ()
 {
@@ -155,7 +158,11 @@ function addItemToCart ()
     
 }
 
-// reset or refresh the page after clicked addToCard button 
+/* 
+    reset or refresh the page after clicked addToCard button to identify 
+    item have added to cart after click button "Add to Cart".
+
+*/
 function resetProduct()
 {
     const colors = document.getElementById('colors');
