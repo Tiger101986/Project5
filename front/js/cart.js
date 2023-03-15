@@ -1,6 +1,5 @@
-
-/* TODO: 
-  - PULL all ordered items from locaslStorage to display on cart page
+/*
+  Working with the API to request shopping product data entry 
 */
 
 let productCache;
@@ -22,14 +21,14 @@ let initialProductCache = (productData) => {
 
 
 
-
+/* TODO: 
+  - PULL all ordered items from locaslStorage to display on cart page
+*/
   
 let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
-console.log(cart);
 
+// Generate order card of each product  
 let cartItems = document.getElementById('cart__items');
-console.log(cartItems);
-
 
 function generateCartItem()
 {     
@@ -73,12 +72,12 @@ function generateCartItem()
     } 
     
 }
-//generateCartItem();
 
 /*
     How to change quantity input in localStorage??????????
     Changing Quantity in Cart page before submit to order
 */
+// Use closest() method to change quantity item
 let changeQuantity = () => {
     const itemQuantity = document.getElementsByClassName('itemQuantity');
 
@@ -127,7 +126,7 @@ function totalQuantityAndPrice ()
 }
 
 
-// Use match() method to remove item
+// Use closest() method to remove item
 function removeItem ()
 {
     let deleteItem = document.getElementsByClassName('deleteItem');
@@ -163,15 +162,10 @@ function removeItem ()
     
 } 
 
-//removeItem();
-
-
-
 /* TODO: Create validation and error messages input 
    firstName, lastName, address, city, and email functions
    to check if they are valid as requirement.
 */
-
 
 let firstName = document.getElementById('firstName');
 let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
@@ -377,130 +371,3 @@ order.addEventListener('click', (event) => {
 
 
 
-//let cartItems = document.getElementById('cart__items');
-        
-        /* return (cartItems.innerHTML = orderedItems.map((orderItem) => 
-        {
-            let {color, id, quantiy} = orderItem;
-            let search = productData.find((dataItem) => { dataItem._id === id && dataItem.colors === color || [] })
-                return
-                    `
-                    <article class="cart__item" data-id="${search._id}" data-color="${search.colors}">
-                        <div class="cart__item__img">
-                            <img src=${search.imageUrl} alt=${search.altTxt}>
-                        </div>
-                        <div class="cart__item__content">
-                            <div class="cart__item__content__description">
-                                <h2>${search.name}</h2>
-                                <p>${search.colors}</p>
-                                <p>€${search.price}</p>
-                            </div>
-                            <div class="cart__item__content__settings">
-                                <div class="cart__item__content__settings__quantity">
-                                <p>Qté : ${quantiy}</p>
-                                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                            </div>
-                            <div class="cart__item__content__settings__delete">
-                                <p class="deleteItem">Delete</p>
-                            </div>
-                            </div>
-                        </div>
-                    </article>
-                    `;
-            })  
-        .join("")); 
-          
-    };*/ 
-/*
-<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-    <div class="cart__item__img">
-        <img src="../images/product01.jpg" alt="Photo of a sofa">
-    </div>
-    <div class="cart__item__content">
-        <div class="cart__item__content__description">
-        <h2>Name of the product</h2>
-        <p>Green</p>
-        <p>€42.00</p>
-        </div>
-        <div class="cart__item__content__settings">
-        <div class="cart__item__content__settings__quantity">
-            <p>Qté : </p>
-            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-        </div>
-        <div class="cart__item__content__settings__delete">
-            <p class="deleteItem">Delete</p>
-        </div>
-        </div>
-    </div>
-</article> */
-
-// Create decrement() and increment() functions
-/* let cart = JSON.parse(localStorage.getItem(product)) || [];
-let search = cart.find((x) => x.id === id) || [];//write it inside generatecart ${search.quantity === undefined ? 0 : search.quantity} 
-function decrement (id, color)
-{
-    let selectedItem = id;
-    let selectedColor = color;
-    let search = cart.find((x) => x.id === selectedItem.id && x.color === selectedColor);
-    if (search === undefined) return;// prevent error happens
-    else if (search.quantity === 0) 
-    {
-        return;
-    }    
-    else
-    {
-        search.quantity -= 1;
-    }        
-    
-    update(selectedItem.id);
-    //select quantity that not equal zero to save in localStorage only then delect quantiy = 0.
-    cart = cart.filter( (x) => x.quantity !== 0);
-    console.log(cart);
-    
-    localStorage.setItem('product', JSON.stringify(cart));  
-}
-
-function increment (id, color){
-    let selectedItem = id;
-    let selectedColor = color;
-    let search = cart.find((x) => x.id === selectedId.id && x.color === selectedColor);
-    if (search === undefined)
-    {
-        cart.push({ id: selectedItem.id, color: selectedColor, quantity: 1});
-    }
-    else 
-    {
-        search.quantity += 1;
-    } 
-    
-    update(selectedId.id, selectedColor.color)
-    localStorage.setItem('product', JSON.stringify(cart));  
-    
-}
-
-let update = (id) => { let search = cart.find( (x) => x.id === id);
-    console.log(search.quantity);
-    document.getElementById(id).innerHTML = search.quantity;
-    calculation();
-}
-
-let calculation = () => { 
-    let cartIcon = document.getElementById('cartAmount');
-    cartIcon.innerHTML = cart.map( (x) => x.quantity).reduce((x, y) => x + y, 0);
-}
-calculation(); // to keep amount of selected item in cart run fast 
-
-let generateCartItem = () => {
-    if (cart.length !== 0)
-    {
-        return (shoppingCart.innerHTML = cart.map((x) => {
-            console.log(x);
-            let {id, color, quantity} = x;
-            let search = shopItemsData.find( (y) => y._id === id) || [];
-            return `
-            <div> calss
-            `
-        }))
-    }
-} 
-*/
