@@ -1,3 +1,9 @@
+/*
+  Working with the API to insert the products into the homepage and 
+  making Links between the products on the homepage and on the product page
+*/
+
+
 const getAllUrl = 'http://localhost:3000/api/products/';
 fetch(getAllUrl)
   .then((response) => response.json())
@@ -6,25 +12,17 @@ fetch(getAllUrl)
     addCard(data);
     
   });
-
-    // CALL a functions that uses the data
-    // ARGUMENTS are the actual info you PASS into the function
         
-
-
 // DECLARE(create) the functions outside of the fetch!!!
-// PARAMETERS are like variables
 function addCard(dataArray) 
 {
-  // where to put the cards when done making them?
   // getting a REFERENCE to a spot in the DOM - the actual ELEMENT!!!!!!
   const items = document.getElementById('items');
-  // console.log('items', items);
 
   // we have an array of objects - iterate to make one card at a time
   // iterate using a for-loop
   for (let i = 0; i < dataArray.length; i++) {
-    // this code will run for each and every object in the dataArray
+    
     // create a variable for a card - assign to it the return value of makeCard
     const card = makeCard(dataArray[i]);
 
