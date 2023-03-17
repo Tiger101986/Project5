@@ -1,46 +1,36 @@
 /*
   Working with the API to request shopping product data entry 
 */
-
 let productCache;
 
 fetch('http://localhost:3000/api/products/')
 
     .then((response) => response.json())
     .then((data) => {
-        
-       initialProductCache(data);
-        
+        initialProductCache(data);
         generateCartItem();
-         
-    }); 
+    });
 
 let initialProductCache = (productData) => {
     productCache = productData;
 }
 
-
-
-/* TODO: 
+/* 
   - PULL all ordered items from locaslStorage to display on cart page
 */
-  
-let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // Generate order card of each product  
 let cartItems = document.getElementById('cart__items');
 
-function generateCartItem()
-{     
-    if (cart.length !== 0)  
-    {
-        
-        cart.forEach((item) => 
-        {
-            
+function generateCartItem() {
+    if (cart.length !== 0) {
+
+        cart.forEach((item) => {
+
             let search = productCache.find(items => items._id === item.id) || [];
             console.log(search);
-            cartItems.innerHTML += 
+            cartItems.innerHTML +=
                 `
                     <article class="cart__item" data-id="${item.id}" data-color="${item.color}">
                         <div class="cart__item__img">
@@ -67,16 +57,12 @@ function generateCartItem()
 
             changeQuantity();
             removeItem();
-            totalQuantityAndPrice(); 
+            totalQuantityAndPrice();
         });
-    } 
-    
+    }
+
 }
 
-/*
-    How to change quantity input in localStorage??????????
-    Changing Quantity in Cart page before submit to order
-*/
 // Use closest() method to change quantity item
 let changeQuantity = () => {
     const itemQuantity = document.getElementsByClassName('itemQuantity');
@@ -101,92 +87,75 @@ let changeQuantity = () => {
     }
 }
 
-
-
-
-
 // Calculate total quantity and price of ordered items
-
-function totalQuantityAndPrice () 
-{
+function totalQuantityAndPrice() {
     let totalOrderedItem = 0;
-    let totalOrderedItemPrice = 0; 
+    let totalOrderedItemPrice = 0;
     const totalQuantity = document.getElementById('totalQuantity');
     const totalPrice = document.getElementById('totalPrice');
 
-    cart.forEach((item) => 
-    {
+    cart.forEach((item) => {
         let search = productCache.find(items => items._id === item.id) || []
         totalOrderedItem += parseInt(item.quantity, 10);
-        totalOrderedItemPrice +=  item.quantity * search.price; 
+        totalOrderedItemPrice += item.quantity * search.price;
         totalQuantity.innerHTML = totalOrderedItem;
-        totalPrice.innerHTML = totalOrderedItemPrice; 
-    }); 
-    
+        totalPrice.innerHTML = totalOrderedItemPrice;
+    });
+
 }
 
-
 // Use closest() method to remove item
-function removeItem ()
-{
+function removeItem() {
     let deleteItem = document.getElementsByClassName('deleteItem');
-    for ( let i = 0; i < deleteItem.length; i++)
-    {
+    for (let i = 0; i < deleteItem.length; i++) {
         let deleteButton = deleteItem[i];
-        deleteButton.addEventListener('click', (event) =>{
-            
+        deleteButton.addEventListener('click', (event) => {
+
             let article = event.target.closest('article');
             let deleteItemId = article.getAttribute("data-id");
             let deleteItemColor = article.getAttribute("data-color");
-           
-            for (let i = 0; i < cart.length; i++)
-            {   
-                if ( cart[i].id === deleteItemId  && cart[i].color === deleteItemColor )
-                {
-                    cart.splice(i, 1);            
-                }               
-            }  
-            //deletItem.remove();
-           if (article)
-           {
-                article.remove();
-               
-           }
-        
-        totalQuantityAndPrice();
-        localStorage.setItem('cart', JSON.stringify(cart));  
-        cart = JSON.parse(localStorage.getItem('cart'));   
-    });  
-         
-    }
-    
-} 
 
-/* TODO: Create validation and error messages input 
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === deleteItemId && cart[i].color === deleteItemColor) {
+                    cart.splice(i, 1);
+                }
+            }
+
+            if (article) {
+                article.remove();
+
+            }
+
+            totalQuantityAndPrice();
+            localStorage.setItem('cart', JSON.stringify(cart));
+            cart = JSON.parse(localStorage.getItem('cart'));
+        });
+
+    }
+
+}
+
+/*  
+   Create validation and error messages input 
    firstName, lastName, address, city, and email functions
    to check if they are valid as requirement.
 */
-
 let firstName = document.getElementById('firstName');
 let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
 firstName.addEventListener('input', checkFirstName);
 let validFirstName = '';
 
-function checkFirstName ()
-{
-    
+function checkFirstName() {
     let firstNameRegex = /^[A-Za-z -]{3,32}$/;
-    if (firstNameRegex.test(firstName.value))
-    {
+    if (firstNameRegex.test(firstName.value)) {
         firstNameErrorMsg.innerHTML = null;
         firstName.style.border = '2px solid green';
         validFirstName = true;
     } else if (firstNameRegex.test(firstName.value) === false || firstName.value === '') {
         firstNameErrorMsg.innerHTML = 'Please inter a valid first name';
         firstName.style.border = '2px solid red';
-        validFirstName = false;  
+        validFirstName = false;
     }
-
 }
 
 let lastName = document.getElementById('lastName');
@@ -194,22 +163,17 @@ let lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
 lastName.addEventListener('input', checkLastName);
 let validLastName = '';
 
-function checkLastName ()
-{
-    
+function checkLastName() {
     let lastNameRegex = /^[A-Za-z -]{3,32}$/;
-    if (lastNameRegex.test(lastName.value))
-    {
+    if (lastNameRegex.test(lastName.value)) {
         lastNameErrorMsg.innerHTML = null;
         lastName.style.border = '2px solid green';
         validLastName = true;
-    } else if (lastNameRegex.test(lastName.value) === false || lastName.value === '') 
-    {
+    } else if (lastNameRegex.test(lastName.value) === false || lastName.value === '') {
         lastNameErrorMsg.innerHTML = 'Please inter a valid last name';
         lastName.style.border = '2px solid red';
-        validLastName = false;  
+        validLastName = false;
     }
-
 }
 
 let address = document.getElementById('address');
@@ -217,40 +181,36 @@ let addressErrorMsg = document.getElementById('addressErrorMsg');
 address.addEventListener('input', checkAddress);
 let validAddress = '';
 
-function checkAddress ()
-{
-    
+function checkAddress() {
     let addressRegExp = /^[A-Za-z0-9 -]{7,32}$/;
-    
-    if (addressRegExp.test(address.value)){
+
+    if (addressRegExp.test(address.value)) {
         addressErrorMsg.innerHTML = null;
         address.style.border = '2px solid green';
         validAddress = true;
     } else if (addressRegExp.test(address.value) === false || address.value === '') {
         addressErrorMsg.innerHTML = 'Please inter a valid address.';
         address.style.border = '2px solid red';
-        validAddress = false;  
+        validAddress = false;
     }
 }
 
 let city = document.getElementById('city');
 let cityNameErrorMsg = document.getElementById('cityErrorMsg');
 city.addEventListener('input', checkCity);
-let validCityName= '';
+let validCityName = '';
 
-function checkCity ()
-{
-    
+function checkCity() {
     let cityNameRegex = /^[A-Za-z -]{3,32}$/;
-    
-    if (cityNameRegex.test(city.value)){
+
+    if (cityNameRegex.test(city.value)) {
         cityNameErrorMsg.innerHTML = null;
         city.style.border = '2px solid green';
         validCityName = true;
     } else if (cityNameRegex.test(city.value) === false || city.value === '') {
         cityNameErrorMsg.innerHTML = 'Please inter a valid city name';
         city.style.border = '2px solid red';
-        validCityName = false;  
+        validCityName = false;
     }
 }
 
@@ -260,52 +220,40 @@ let emailErrorMsg = document.getElementById('emailErrorMsg');
 email.addEventListener('input', checkEmail);
 let validEmail = '';
 
-function checkEmail ()
-{
-    
-    let emailRegExp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i; 
-    //add pattern attribute in email DOM pattern=".+@.+\..+"
-    if (emailRegExp.test(email.value))
-    {
+function checkEmail() {
+    let emailRegExp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    if (emailRegExp.test(email.value)) {
         emailErrorMsg.innerHTML = null;
         email.style.border = '2px solid green';
         validEmail = true;
-    } else if (lastNameRegex.test(lastName.value) === false || lastName.value === '') 
-    {
+    } else if (lastNameRegex.test(lastName.value) === false || lastName.value === '') {
         lastNameErrorMsg.innerHTML = 'Please inter a valid email';
         email.style.border = '2px solid red';
-        validEmail = false;  
+        validEmail = false;
     }
-
 }
 
 // Submit ordered data information to send to API backend
-
-
 const order = document.getElementById('order');
 order.addEventListener('click', (event) => {
-
     event.preventDefault();
-    
-    if ( validFirstName === true && validLastName === true && validAddress === true && validCityName === true && validEmail === true )
-    {
+    if (validFirstName === true && validLastName === true && validAddress === true && validCityName === true && validEmail === true) {
         let itemId = cart.map(item => item.id);
         console.log(itemId);
-        let body = 
-        {        
-        contact:
+        let body =
         {
-            firstName: firstName.value,
-            lastName: lastName.value,
-            address: address.value,
-            city: city.value,
-            email: email.value
-        },
-        
-        products: itemId
-        
+            contact:
+            {
+                firstName: firstName.value,
+                lastName: lastName.value,
+                address: address.value,
+                city: city.value,
+                email: email.value
+            },
+            products: itemId
         }
-        console.log(body);
+
         const orderData = {
             method: 'post',
             headers: { "Content-Type": "application/json", },
@@ -319,13 +267,11 @@ order.addEventListener('click', (event) => {
                 localStorage.clear();
             })
             .catch(error => console.log(error));
-    } 
-    else
-    {
+    }
+    else {
         alert('Please properly fill out the form');
     }
-
-} );
+});
 
 
 

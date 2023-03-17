@@ -1,22 +1,15 @@
 /* 
     Using new URLSearchParams(window.location.search) to collect the ID of a product to display on product page.
 */
-
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
-console.log(id);
 
 const getOneUrlById = 'http://localhost:3000/api/products/' + id;
 fetch(getOneUrlById)
   .then((response) => response.json())
   .then((data) => {
-    
-    /* console.log(data); */
-    productionCard (data);
-    
+    productionCard (data);    
   });  
-
-
 
 // assign cart array variable to get data item in localStorage 
 let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
@@ -59,38 +52,29 @@ function productionCard (productData)
     for ( let color of productData.colors)
     {
         const option = document.createElement('option');
-       
         option.setAttribute('value', color);
         option.textContent = color;
-        console.log(option);
-        
-       colors.appendChild(option); 
-
-    
+        colors.appendChild(option); 
     } 
 
     // add addEventListener function to select amount of product  
-    quantity.addEventListener('change', function quantityChanged(event){
-        
+    quantity.addEventListener('change', function quantityChanged(event){    
         let input = event.target.value;
         productObj.quantity = parseInt(input, 10);
         console.log(productObj);
     });
+
     // add addEventListener function to select color option 
-    colors.addEventListener('change', function selectedColor(event){
-       
+    colors.addEventListener('change', function selectedColor(event){  
         let selectedColor = event.target.value;
         productObj.color = selectedColor;
         console.log(productObj);
     });   
     
-
     // adding product to Cart and save in localStorage 
     addToCart.addEventListener('click', addItemToCart);
 
-    
-    initialProductObj(productData);
-            
+    initialProductObj(productData);          
 }   
 
 // initial productObj 
@@ -107,28 +91,9 @@ function initialProductObj(productData)
     2- same id & different color
     3- different id & same color
 */
-
 function addItemToCart ()
 {
    
-   // event.preventDefault();
-/*    if (cart.length === 0 )
-   {
-       cart.push(productObj);
-   }
-   else 
-   {
-        let search = cart.find((product) => product.id === productObj.id && product.color === productObj.color); 
-        if (search === undefined)
-        {
-            cart.push(productObj);   
-        }
-        else 
-        {
-            search.quantity += productObj.quantity;
-        }
-   }
- */
     if (productObj.color === '')
     {
         return ;
@@ -145,7 +110,7 @@ function addItemToCart ()
         }
                            
     }
-    //console.log (cart);
+    
     if (selectedId === true){
 
         cart.push(productObj);
