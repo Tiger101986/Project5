@@ -1,4 +1,4 @@
-// create a new URLSearchParams wiht window.location.search to get orderId from backend.
+// request order confirmation with creating a new URLSearchParams wiht window.location.search to get orderId from backend.
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const orderedId = urlParams.get('orderedId');

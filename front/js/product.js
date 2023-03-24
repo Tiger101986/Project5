@@ -6,26 +6,25 @@ const id = params.get('id');
 
 const getOneUrlById = 'http://localhost:3000/api/products/' + id;
 fetch(getOneUrlById)
-  .then((response) => response.json())
-  .then((data) => {
-    productionCard (data);    
-  });  
+    .then((response) => response.json())
+    .then((data) => {
+        productionCard(data);
+    });
 
 // assign cart array variable to get data item in localStorage 
-let cart = JSON.parse(localStorage.getItem('cart')) || [] ;
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 //this obj represents the product that user selected
 const productObj = {
     id: '',
     color: '',
-    quantity: 1 
+    quantity: 1
 };
 
 
 
 // generate product card 
-function productionCard (productData)
-{
+function productionCard(productData) {
     // access to dom
     const itemImg = document.getElementsByClassName('item__img')[0];
     const title = document.querySelector('#title');
@@ -34,7 +33,7 @@ function productionCard (productData)
     const colors = document.getElementById('colors');
     const quantity = document.getElementById('quantity');
     const addToCart = document.getElementById('addToCart');
-    
+
     // modify element by adding textContent
     title.textContent = productData.name;
     price.textContent = productData.price;
@@ -43,43 +42,41 @@ function productionCard (productData)
     // create image element and setAttributes of source and alternative text
     const img = document.createElement('img');
     img.setAttribute('src', productData.imageUrl);
-    img.setAttribute('alt', productData.altTxt); 
+    img.setAttribute('alt', productData.altTxt);
 
     //appendChild 
-    itemImg.appendChild(img);  
+    itemImg.appendChild(img);
 
     // Creating option elements to select colors of item 
-    for ( let color of productData.colors)
-    {
+    for (let color of productData.colors) {
         const option = document.createElement('option');
         option.setAttribute('value', color);
         option.textContent = color;
-        colors.appendChild(option); 
-    } 
+        colors.appendChild(option);
+    }
 
     // add addEventListener function to select amount of product  
-    quantity.addEventListener('change', function quantityChanged(event){    
+    quantity.addEventListener('change', function quantityChanged(event) {
         let input = event.target.value;
         productObj.quantity = parseInt(input, 10);
         console.log(productObj);
     });
 
     // add addEventListener function to select color option 
-    colors.addEventListener('change', function selectedColor(event){  
+    colors.addEventListener('change', function selectedColor(event) {
         let selectedColor = event.target.value;
         productObj.color = selectedColor;
         console.log(productObj);
-    });   
-    
+    });
+
     // adding product to Cart and save in localStorage 
     addToCart.addEventListener('click', addItemToCart);
 
-    initialProductObj(productData);          
-}   
+    initialProductObj(productData);
+}
 
 // initial productObj 
-function initialProductObj(productData)
-{
+function initialProductObj(productData) {
     productObj.id = productData._id;
     productObj.color = productData.colors;
 }
@@ -91,36 +88,32 @@ function initialProductObj(productData)
     2- same id & different color
     3- different id & same color
 */
-function addItemToCart ()
-{
-   
-    if (productObj.color === '')
-    {
-        return ;
+function addItemToCart() {
+
+    if (productObj.color === '') {
+        return;
     }
-    let selectedId = true; 
-    for ( let product of cart)
-    {   
-        if(product.id === productObj.id && product.color === productObj.color)
-        {
+    let selectedId = true;
+    for (let product of cart) {
+        if (product.id === productObj.id && product.color === productObj.color) {
             console.log("before", product.quantity);
             product.quantity += productObj.quantity;
-            selectedId  = false;   
+            selectedId = false;
             console.log("after", product.quantity);
         }
-                           
+
     }
-    
-    if (selectedId === true){
+
+    if (selectedId === true) {
 
         cart.push(productObj);
-    } 
+    }
 
     //setting localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));     
+    localStorage.setItem('cart', JSON.stringify(cart));
     cart = JSON.parse(localStorage.getItem('cart'));
     resetProduct();
-    
+
 }
 
 /* 
@@ -128,17 +121,16 @@ function addItemToCart ()
     item have added to cart after click button "Add to Cart".
 
 */
-function resetProduct()
-{
+function resetProduct() {
     const colors = document.getElementById('colors');
     const quantity = document.getElementById('quantity');
 
     colors.value = '';
     quantity.value = 1;
-   
+
     productObj.color = '';
     productObj.quantity = 1;
-  
+
 }
 
 
@@ -165,62 +157,6 @@ function resetProduct()
 
 
 
-
-
-
-
-/* function decrement (id, color)
-{
-    let selectedId = id;
-    let selectedColor = color;
-    let search = cart.find((x, y) => x.id === selectedId && y.electedColor === color);
-    if (search === undefined) return;// prevent error happens
-    else if (search.quantity === 0) 
-    {
-        return;
-    }    
-    else
-    {
-        search.quantity -= 1;
-    }        
-    
-    update(selectedId.id, selectedColor.color);
-    //select quantity that not equal zero to save in localStorage only then delect quantiy = 0.
-    cart = cart.filter( (x) => x.quantity !== 0);
-    console.log(cart);
-    
-    localStorage.setItem('cart', JSON.stringify(cart));  
-}
-
-function increment (id, color)
-{    
-    let selectedId = id;
-    let selectedColor = color;
-    let search = cart.find((x) => x.id === selectedId && x.color === selectedColor);
-    if (search === undefined)
-    {
-        cart.push({ id: id, color: color, quantity: 1});
-    }
-    else 
-    {
-        search.quantity += 1;
-    } 
-    
-    update(selectedId.id, selectedColor.color)
-    localStorage.setItem('product', JSON.stringify(cart));  
-    
-} */
-
-
-
-
-
-    
-
-
-
-
-   
 
 
 
